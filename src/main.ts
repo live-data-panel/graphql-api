@@ -12,7 +12,8 @@ import createMetricsPlugin from 'apollo-metrics';
 import * as Sentry from '@sentry/node';
 import config from './config';
 import { apolloServerSentryPlugin } from './bootstrap/apolloServerSentryPlugin';
-import { WebhookHandler } from './models/WebhookHandler';
+import { WebhookHandler } from './models/webhook/WebhookHandler';
+import { registerEnumsToSchema } from './bootstrap/registerEnumsToSchema';
 
 // Init sentry
 Sentry.init({ ...config.sentry });
@@ -27,6 +28,7 @@ async function bootstrap(): Promise<void> {
     // Database connection
     await TypeORM.createConnection();
 
+    registerEnumsToSchema();
     // Building scheme with type-graphql
     const schema = await buildSchema({
         resolvers: [UserResolver],
@@ -59,12 +61,12 @@ async function bootstrap(): Promise<void> {
         console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
     });
 
-    
+
     app.use(express.json());
-    app.post('/webhook', (req: Request, res: Response) => {
+    app.post('/webhook', async(req: Request, res: Response) => {
         const webhookHandler = Container.get(WebhookHandler);
 
-        webhookHandler.register(req.body);
+        await webhookHandler.register(req.body, req.header('X-Gitlab-Token') || '');
 
         res.send();
     });

@@ -4,22 +4,22 @@ import { DeploymentEvent } from '../pipeline/DeploymentEvent';
 
 @Entity()
 @ObjectType()
-export class User {
+export class Project {
     @PrimaryGeneratedColumn('uuid')
     @Field(() => ID)
-    public userId: string;
+    public projectId: string;
 
-    @Column({ unique: true })
+    @Column()
     @Field()
-    public username: string;
+    public gitlabProjectId: string;
 
-    @Column({ nullable: true })
-    @Field({ nullable: true })
+    @Column()
+    @Field()
+    public token: string;
+
+    @Column()
+    @Field()
     public name: string;
-
-    @Column({ nullable: true })
-    @Field({ nullable: true })
-    public email: string;
 
     @Column({ nullable: true })
     @Field({ nullable: true })
