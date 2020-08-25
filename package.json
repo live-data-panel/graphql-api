@@ -1,7 +1,7 @@
 {
-    "name": "graphql-api-template",
+    "name": "live-data-panel-graphql-api",
     "version": "1.0.0",
-    "description": "GraphQl API template for fast setup with best libraries for great developer experience",
+    "description": "GraphQl API for live data panel",
     "main": "index.js",
     "scripts": {
         "serve": "nodemon",
