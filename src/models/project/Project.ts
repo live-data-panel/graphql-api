@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { DeploymentEvent } from '../pipeline/DeploymentEvent';
+import { DeploymentEvent } from '../deployment-event/DeploymentEvent';
 
 @Entity()
 @ObjectType()

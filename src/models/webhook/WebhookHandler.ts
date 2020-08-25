@@ -1,9 +1,9 @@
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { UserRepository } from '../user/UserRepository';
-import { DeploymentEvent } from '../pipeline/DeploymentEvent';
+import { DeploymentEvent } from '../deployment-event/DeploymentEvent';
 import { User } from '../user/User';
-import { DeploymentStatus } from '../pipeline/DeploymentStatus';
-import { DeploymentEventRepository } from '../pipeline/DeploymentEventRepository';
+import { DeploymentEventStatus } from '../deployment-event/DeploymentEventStatus';
+import { DeploymentEventRepository } from '../deployment-event/DeploymentEventRepository';
 import { ProjectRepository } from '../project/ProjectRepository';
 import { Project } from '../project/Project';
 
@@ -55,7 +55,7 @@ export class WebhookHandler {
         const deploymentEvent = new DeploymentEvent();
 
         deploymentEvent.commitTitle = body.commit_title;
-        deploymentEvent.status = body.status as DeploymentStatus;
+        deploymentEvent.status = body.status as DeploymentEventStatus;
         deploymentEvent.user = user;
         deploymentEvent.project = project;
 

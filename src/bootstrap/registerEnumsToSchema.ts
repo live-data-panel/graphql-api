@@ -1,8 +1,8 @@
 import { registerEnumType } from 'type-graphql';
-import { DeploymentStatus } from '../models/pipeline/DeploymentStatus';
+import { DeploymentEventStatus } from '../models/deployment-event/DeploymentEventStatus';
 
 export const registerEnumsToSchema = () => {
-    registerEnumType(DeploymentStatus, {
-        name: 'DeploymentStatus',
+    registerEnumType(DeploymentEventStatus, {
+        name: 'DeploymentEventStatus',
     });
 };

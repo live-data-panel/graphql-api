@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { DeploymentStatus } from './DeploymentStatus';
+import { DeploymentEventStatus } from './DeploymentEventStatus';
 import { User } from '../user/User';
 import { Project } from '../project/Project';
 
@@ -11,9 +11,9 @@ export class DeploymentEvent {
     @Field(() => ID)
     public deploymentEventId: string;
 
-    @Column({ type: 'enum', enum: DeploymentStatus })
-    @Field(() => DeploymentStatus)
-    public status: DeploymentStatus;
+    @Column({ type: 'enum', enum: DeploymentEventStatus })
+    @Field(() => DeploymentEventStatus)
+    public status: DeploymentEventStatus;
 
     @Column()
     @Field()
