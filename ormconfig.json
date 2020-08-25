@@ -1,17 +1,16 @@
 {
-  "type": "mysql",
-  "host": "mysql",
-  "port": 3306,
-  "username": "root",
-  "password": "root",
-  "database": "live_data_panel",
-  "logging": false,
-  "synchronize": true,
-  "entities": [
-    "src/models/**/*.ts"
-  ],
-  "migrations": ["src/migration/*.ts"],
-  "cli": {
-    "migrationsDir": "src/migration"
-  }
+    "type": "mysql",
+    "host": "mysql",
+    "port": 3306,
+    "username": "root",
+    "password": "root",
+    "database": "live_data_panel",
+    "logging": false,
+    "synchronize": true,
+    "entities": ["src/models/**/*.ts"],
+    "subscribers": ["src/models/**/*.ts"],
+    "migrations": ["src/migration/*.ts"],
+    "cli": {
+        "migrationsDir": "src/migration"
+    }
 }

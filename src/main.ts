@@ -14,6 +14,9 @@ import config from './config';
 import { apolloServerSentryPlugin } from './bootstrap/apolloServerSentryPlugin';
 import { WebhookHandler } from './models/webhook/WebhookHandler';
 import { registerEnumsToSchema } from './bootstrap/registerEnumsToSchema';
+import { PubSub, PubSubEngine } from 'graphql-subscriptions';
+import { DeploymentEventResolver } from './resolvers/DeploymentEventResolver';
+import * as http from 'http';
 
 // Init sentry
 Sentry.init({ ...config.sentry });
@@ -22,6 +25,8 @@ Sentry.init({ ...config.sentry });
  * Bootstrapping function
  */
 async function bootstrap(): Promise<void> {
+    Container.set('pubsub', new PubSub() as PubSubEngine);
+
     // Type di with type ORM
     TypeORM.useContainer(Container);
 
@@ -31,9 +36,10 @@ async function bootstrap(): Promise<void> {
     registerEnumsToSchema();
     // Building scheme with type-graphql
     const schema = await buildSchema({
-        resolvers: [UserResolver],
+        resolvers: [UserResolver, DeploymentEventResolver],
         container: Container,
         authChecker,
+        pubSub: Container.get<PubSubEngine>('pubsub'),
     });
 
     // Express app
@@ -57,13 +63,15 @@ async function bootstrap(): Promise<void> {
 
     server.applyMiddleware({ app });
 
-    app.listen({ port: 4000 }, () => {
+    const httpServer = http.createServer(app);
+    server.installSubscriptionHandlers(httpServer);
+
+    httpServer.listen({ port: 4000 }, () => {
         console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
     });
 
-
     app.use(express.json());
-    app.post('/webhook', async(req: Request, res: Response) => {
+    app.post('/webhook', async (req: Request, res: Response) => {
         const webhookHandler = Container.get(WebhookHandler);
 
         await webhookHandler.register(req.body, req.header('X-Gitlab-Token') || '');
