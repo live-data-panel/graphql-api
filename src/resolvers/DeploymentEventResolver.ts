@@ -1,7 +1,4 @@
-import { Query, Resolver, Root, Subscription } from 'type-graphql';
-import { InjectRepository } from 'typeorm-typedi-extensions';
-import { UserRepository } from '../models/user/UserRepository';
-import { User } from '../models/user/User';
+import { Resolver, Root, Subscription } from 'type-graphql';
 import { DeploymentEvent } from '../models/deployment-event/DeploymentEvent';
 
 @Resolver(DeploymentEvent)
